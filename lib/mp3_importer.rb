@@ -1,14 +1,14 @@
 require "pry"
 
 class MP3Importer
-    attr_accessor :path
+    attr_reader :path
 
     def initialize(path)
         @path = path
     end
 
     def files
-        @files = Dir.glob("#{path}/*.mp3").collect {|f| f.gsub("#{path}/", "")}
+        file_list = Dir.glob("#{path}/*.mp3").collect {|file| file.gsub("#{path}/", "")}
     end
 
     def import

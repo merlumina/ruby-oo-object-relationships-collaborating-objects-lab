@@ -1,27 +1,33 @@
+require "pry"
 
 class Song
-    attr_accessor :name, :artist
+    attr_accessor :name, :artist, :genre
 
     @@all = []
 
     def initialize(name)
-        @name = name
-        @@all << self
+        self.name = name
+        save
     end
 
     def self.all
         @@all
     end
 
+    def save
+        self.class.all << self
+    end
+
     def self.new_by_filename(filename)
-        parsed_filename = filename.split(" - ")
-        song = self.new(parsed_filename[1])
-        song.artist_name = parsed_filename[0]
-        song
+        # binding.pry
+        artist, song = filename.gsub(".mp3", "").split(" - ")
+        new_song = self.new(song)
+        new_song.artist_name = artist
+        new_song
     end
 
     def artist_name=(name)
-        Artist.find(name) ? self.artist = Artist.find(name) : self.artist = Artist.new(name)
-    end 
+        self.artist = Artist.find_or_create_by_name(name)
+    end
 
 end
